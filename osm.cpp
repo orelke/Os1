@@ -1,0 +1,149 @@
+#include <iostream>
+#include <sys/time.h>
+#include <cmath>
+#include "osm.h"
+
+
+#define INVALID 0
+#define ERROR -1
+#define ITERATION_DEFAULT 1000
+#define UNROLLING_FACTOR 5
+#define SEC_TO_NANO 1000000000
+#define MICRO_TO_NANO 1000
+
+timeval start;
+timeval end;
+void func(){};
+
+
+
+int osm_init()
+{
+    if(gettimeofday(&start, NULL) == ERROR)
+    {
+        return ERROR;
+    }
+
+    return 0;
+}
+
+int osm_finalizer()
+{
+    if(gettimeofday(&end, NULL) == ERROR)
+    {
+        return ERROR;
+    }
+
+    return 0;
+}
+
+double osm_operation_time(unsigned int iterations)
+{
+
+    if(osm_init() == ERROR)
+    {
+        return ERROR;
+    }
+
+
+    unsigned int totalIterations = iterations == INVALID ? ITERATION_DEFAULT : iterations;
+    double x = 0, y = 3 , z = 4;
+    unsigned int rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
+
+    for(unsigned int i = 0; i < rounds ; i++)
+    {
+
+        x = z + y;
+        x = z + y;
+        x = z + y;
+        x = z + y;
+        x = z + y;
+
+    }
+
+
+    if(osm_finalizer() == ERROR)
+    {
+        return ERROR;
+    }
+
+    y = x;
+    
+    double time = ((end.tv_sec - start.tv_sec) * SEC_TO_NANO) +
+                  (end.tv_usec - start.tv_usec) * MICRO_TO_NANO;
+
+    return time / totalIterations;
+}
+
+double osm_function_time(unsigned int iterations)
+{
+
+    if(osm_init() == ERROR)
+    {
+        return ERROR;
+    }
+    unsigned int totalIterations = iterations == 0 ? ITERATION_DEFAULT : iterations;
+    unsigned int rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
+
+    for(unsigned int i = 0; i < rounds; i++)
+    {
+        func();
+        func();
+        func();
+        func();
+        func();
+    }
+
+    if(osm_finalizer() == ERROR)
+    {
+        return ERROR;
+    }
+    double time = ((end.tv_sec - start.tv_sec) * SEC_TO_NANO) +
+                  (end.tv_usec - start.tv_usec) * MICRO_TO_NANO;
+
+    return time / totalIterations;
+
+
+}
+
+double osm_syscall_time(unsigned int iterations)
+{
+    if(osm_init() == ERROR)
+    {
+        return ERROR;
+    }
+
+
+    unsigned int totalIterations = iterations == 0 ? ITERATION_DEFAULT : iterations;
+    unsigned int rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
+
+    for(unsigned int i = 0; i < rounds; i ++)
+    {
+        OSM_NULLSYSCALL;
+        OSM_NULLSYSCALL;
+        OSM_NULLSYSCALL;
+        OSM_NULLSYSCALL;
+        OSM_NULLSYSCALL;
+
+    }
+
+    if(osm_finalizer() == ERROR)
+    {
+        return ERROR;
+    }
+
+    double time = ((end.tv_sec - start.tv_sec) * SEC_TO_NANO) +
+                  (end.tv_usec - start.tv_usec) * MICRO_TO_NANO;
+
+    return time / totalIterations;
+
+}
+
+int main()
+{
+    std::cout << osm_operation_time(1000000)<< std::endl;
+    std::cout << osm_function_time(1000000)<< std::endl;
+    std::cout << osm_syscall_time(1000000)<< std::endl;
+
+    return 0;
+}

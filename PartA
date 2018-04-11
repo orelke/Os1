@@ -1,0 +1,80 @@
+Assignment 1
+
+
+Analysing result of command 'strace WhatIDo 0' (with argument 0):
+-------------------------------------------------------------
+
+mkdir("Welcome", 0775)                  = 0
+
+This command creates Welcome directory.  the return value is 0 means that the command done successfully.
+mode 0775 is giving permission to the file. 
+
+
+mkdir("Welcome/To", 0775)     = 0
+
+creates Inner 'To' directory successfully, with return value of 0.
+mode 0775 is giving permission to the file.
+
+
+open("Welcome/To/OS2018", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
+
+this command use the open system call. its  opens the file OS2018  in folder 'Welcome/To'. 
+"Welcome/To/OS2018", O_WRONLY|O_CREAT|O_TRUNC, 0666 are the system call arguments (flags) :
+O_WRONLY - Open for writing only. 
+O_CREAT - Check if the file exist. in this case this flag has no effect, else its create the file. 
+O_TRUNC	- if the file exists and is a regular file,  and the file is successfully opened by O_WRONLY  then its length is truncated to 0 and the mode and owner are unchanged.
+0666 - All users  can read and write.
+3 – system call return value, the command done successfully. In case of failure the return value is -1.
+
+
+
+fstat(3, {st_mode=S_IFREG|0664, st_size=0, ...}) = 0
+The command return information about the file 'os2018'3. the command use the  fstat system call and returns 0 on success and else -1. 
+S_ISREG(m) - is it a regular file?
+
+
+write(3, "orelke\nIf you haven't read the course guidelines yet --- do it right now!\nabc", 76) = 76
+
+The Program calls write system call and then tries to write 74 characters to "OS2018" file.
+3 - file descriptor.
+"orelke\nIf you haven't read the course guidelines yet --- do it right now!\nabc" - the buffer
+76 - amount of bytes to write. 
+76 - Return value - the number of bayets written is returned. the command succes we can by the descriptor id that the return value diffrrent then -1
+
+
+close(3)= 0
+
+closing the file successfully.
+returns zero on success.  else -1.
+
+
+unlink("Welcome/To/OS2018") = 0
+
+This sys-call deleted the file OS2018 from the file system.
+this call succeeded with return value 0.
+"Welcome/To/OS2018" - pathname.
+
+
+
+rmdir("Welcome/To/") = 0
+This function delete a directory.
+"Welcome/To/" - is the path name
+
+
+
+rmdir("Welcome/") = 0
+This function delete a directory.
+"Welcome/" is the pathname
+
+
+exit_group(0)
++++ exited with 0 +++ = ?
+The system call exit all threads in a process and terminates tehm.
+then exit the program with not return value.
+
+
+                          
+
+
+
+
