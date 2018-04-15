@@ -44,26 +44,28 @@ terminal device file, this flag is ignored.
 3 – system call return value, means that the command was done successfully.
 
 
-fstat(3, {st_mode=S_IFREG|0664, st_size=0, ...}) = 0
+fstat(3, {st_dev=makedev(0, 53), st_ino=1917381310, st_mode=S_IFREG|0644,
+ st_nlink=1, st_uid=201797, st_gid=40, st_blksize=65536, st_blocks=0, st_size=0,
+  st_atime=2018-04-15T17:01:07+0300.536969000,
+   st_mtime=2018-04-15T17:01:07+0300.536969000,
+    st_ctime=2018-04-15T17:01:07+0300.536969000}) = 0
 
-The fstat() function shall obtain information about an open file associated with
+*** The fstat() function shall obtain information about an open file associated with
  the file descriptor fildes(3 - which is OS2018), and shall write it to the area
   pointed to by buf.
 S_ISREG(m) - checks whether it's a regular file.
-The return value is zero meaning the command completed succesfully.
+The return value is zero meaning the command completed succesfully. ***
 
 
-write(3, "orelke\nIf you haven't read the course guidelines yet --- do it right
- now!\nabc", 76) = 76
+write(3, "artyomab\nIf you haven't read the course guidelines yet --- do it
+ right now!\n0", 77) = 77
 
-The Program calls write system call and then tries to write 74 characters to
- "OS2018" file.
-3 - file descriptor.
-"orelke\nIf you haven't read the course guidelines yet --- do it right now!
-\nabc" - the buffer
-76 - amount of bytes to write. 
-76 - Return value - the number of bayets written is returned. the command
- success we can by the descriptor id that the return value diffrrent then -1
+The Program calls write system call and then tries to write 77 bytes to
+ "OS2018" file, the sentence written in the second argument, that is.
+3 - file descriptor (OS2018).
+77 - amount of bytes to write.
+77 - Return value - the number of bytes written. The comment completed
+successfully
 
 
 close(3)= 0
@@ -74,27 +76,31 @@ returns zero on success.  else -1.
 
 unlink("Welcome/To/OS2018") = 0
 
-This sys-call deleted the file OS2018 from the file system.
-this call succeeded with return value 0.
+This sys-call deletes the file OS2018 from the file system.
+This call succeeded with return value 0.
 "Welcome/To/OS2018" - pathname.
 
 
-
 rmdir("Welcome/To/") = 0
+
 This function delete a directory.
 "Welcome/To/" - is the path name
 
 
-
 rmdir("Welcome/") = 0
+
 This function delete a directory.
 "Welcome/" is the pathname
 
 
-exit_group(0)
-+++ exited with 0 +++ = ?
-The system call exit all threads in a process and terminates tehm.
-then exit the program with not return value.
+exit_group(0)                           = ?
+
+The system call exits all threads from the calling process thread group
+ in a process and terminates them.
+
++++ exited with 0 +++
+
+The final return value of the program is 0.
 
 
                           
