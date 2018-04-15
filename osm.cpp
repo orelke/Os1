@@ -47,18 +47,16 @@ double osm_operation_time(unsigned int iterations)
 
 
     unsigned int totalIterations = iterations == INVALID ? ITERATION_DEFAULT : iterations;
-    double x = 0, y = 3 , z = 4;
+    double x1, x2, x3, x4, x5, y = 3 , z = 4;
     unsigned int rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
 
     for(unsigned int i = 0; i < rounds ; i++)
     {
-
-        x = z + y;
-        x = z + y;
-        x = z + y;
-        x = z + y;
-        x = z + y;
-
+        x1 = z + y;
+        x2 = z + y;
+        x3 = z + y;
+        x4 = z + y;
+        x5 = z + y;
     }
 
 
@@ -66,8 +64,6 @@ double osm_operation_time(unsigned int iterations)
     {
         return ERROR;
     }
-
-    y = x;
     
     double time = ((end.tv_sec - start.tv_sec) * SEC_TO_NANO) +
                   (end.tv_usec - start.tv_usec) * MICRO_TO_NANO;
