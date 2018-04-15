@@ -1,5 +1,5 @@
-orelke, login2
-Student orel keliahu (308555499), Student Name2 (ID2)
+orelke, artyomab
+Student orel keliahu (308555499), artyom abramovich (324326719)
 EX: 1
 
 FILES:
@@ -12,45 +12,58 @@ ANSWERS:
 Assignment 1
 
 
-Analysing result of command 'strace WhatIDo 0' (with argument 0):
+Analysing result of command 'strace WhatIDo 0' (with argument 0) produces the
+following system calls:
 -------------------------------------------------------------
 
 mkdir("Welcome", 0775)                  = 0
 
-This command creates Welcome directory.  the return value is 0 means that the command done successfully.
-mode 0775 is giving permission to the file. 
+This command creates a directory called "Welcome" with permissions number 0775.
+  The return value is 0 means that the command done successfully.
 
 
 mkdir("Welcome/To", 0775)     = 0
 
-creates Inner 'To' directory successfully, with return value of 0.
-mode 0775 is giving permission to the file.
+This command creates a directory inside "Welcome" directory named "To" with
+permissions number 0775, also successfully.
 
 
 open("Welcome/To/OS2018", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
 
-this command use the open system call. its  opens the file OS2018  in folder 'Welcome/To'. 
-"Welcome/To/OS2018", O_WRONLY|O_CREAT|O_TRUNC, 0666 are the system call arguments (flags) :
-O_WRONLY - Open for writing only. 
-O_CREAT - Check if the file exist. in this case this flag has no effect, else its create the file. 
-O_TRUNC	- if the file exists and is a regular file,  and the file is successfully opened by O_WRONLY  then its length is truncated to 0 and the mode and owner are unchanged.
-0666 - All users  can read and write.
-3 – system call return value, the command done successfully. In case of failure the return value is -1.
-
+This command opens and creates (0_CREAT) (if doesn't exist) file named "OS2018"
+ in folder 'Welcome/To'.
+"Welcome/To/OS2018", O_WRONLY|O_CREAT|O_TRUNC, 0666 are the system call
+ arguments (flags) :
+O_WRONLY - Open with writing only permissions.
+O_CREAT - Check if the file exists. In this case this flag has no effect, else
+ it creates the file.
+O_TRUNC	- if the file exists and is a regular file, and the file has permissions
+that allow writing, then its length is truncated to 0. If the file is a FIFO or
+terminal device file, this flag is ignored.
+0666 permissions - read and write permissions for the file.
+3 – system call return value, means that the command was done successfully.
 
 
 fstat(3, {st_mode=S_IFREG|0664, st_size=0, ...}) = 0
-The command return information about the file 'os2018'3. the command use the  fstat system call and returns 0 on success and else -1. 
-S_ISREG(m) - is it a regular file?
+
+The fstat() function shall obtain information about an open file associated with
+ the file descriptor fildes(3 - which is OS2018), and shall write it to the area
+  pointed to by buf.
+S_ISREG(m) - checks whether it's a regular file.
+The return value is zero meaning the command completed succesfully.
 
 
-write(3, "orelke\nIf you haven't read the course guidelines yet --- do it right now!\nabc", 76) = 76
+write(3, "orelke\nIf you haven't read the course guidelines yet --- do it right
+ now!\nabc", 76) = 76
 
-The Program calls write system call and then tries to write 74 characters to "OS2018" file.
+The Program calls write system call and then tries to write 74 characters to
+ "OS2018" file.
 3 - file descriptor.
-"orelke\nIf you haven't read the course guidelines yet --- do it right now!\nabc" - the buffer
+"orelke\nIf you haven't read the course guidelines yet --- do it right now!
+\nabc" - the buffer
 76 - amount of bytes to write. 
-76 - Return value - the number of bayets written is returned. the command succes we can by the descriptor id that the return value diffrrent then -1
+76 - Return value - the number of bayets written is returned. the command
+ success we can by the descriptor id that the return value diffrrent then -1
 
 
 close(3)= 0
