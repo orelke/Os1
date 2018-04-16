@@ -5,7 +5,7 @@
 
 
 #define INVALID 0
-#define ERROR -1
+#define ERROR (-1)
 #define ITERATION_DEFAULT 1000
 #define UNROLLING_FACTOR 5
 #define SEC_TO_NANO 1000000000
@@ -19,7 +19,7 @@ void func(){};
 
 int osm_init()
 {
-    if(gettimeofday(&start, NULL) == ERROR)
+    if(gettimeofday(&start, nullptr) == ERROR)
     {
         return ERROR;
     }
@@ -29,13 +29,15 @@ int osm_init()
 
 int osm_finalizer()
 {
-    if(gettimeofday(&end, NULL) == ERROR)
+    if(gettimeofday(&end, nullptr) == ERROR)
     {
         return ERROR;
     }
 
     return 0;
 }
+
+
 
 double osm_operation_time(unsigned int iterations)
 {
@@ -47,8 +49,8 @@ double osm_operation_time(unsigned int iterations)
 
 
     unsigned int totalIterations = iterations == INVALID ? ITERATION_DEFAULT : iterations;
-    double x1, x2, x3, x4, x5, y = 3 , z = 4;
-    unsigned int rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
+    int x1 = 0, x2 = 0, x3 = 0, x4 = 0, x5 = 0, y = 3 , z = 4;
+    auto rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
 
     for(unsigned int i = 0; i < rounds ; i++)
     {
@@ -59,6 +61,11 @@ double osm_operation_time(unsigned int iterations)
         x5 = z + y;
     }
 
+    (void)x1;
+    (void)x2;
+    (void)x3;
+    (void)x4;
+    (void)x5;
 
     if(osm_finalizer() == ERROR)
     {
@@ -79,7 +86,7 @@ double osm_function_time(unsigned int iterations)
         return ERROR;
     }
     unsigned int totalIterations = iterations == 0 ? ITERATION_DEFAULT : iterations;
-    unsigned int rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
+    auto rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
 
     for(unsigned int i = 0; i < rounds; i++)
     {
@@ -109,9 +116,8 @@ double osm_syscall_time(unsigned int iterations)
         return ERROR;
     }
 
-
     unsigned int totalIterations = iterations == 0 ? ITERATION_DEFAULT : iterations;
-    unsigned int rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
+    auto rounds = (unsigned int)std::ceil(totalIterations / UNROLLING_FACTOR);
 
     for(unsigned int i = 0; i < rounds; i ++)
     {

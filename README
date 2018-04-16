@@ -11,89 +11,64 @@ ANSWERS:
 
 Assignment 1
 
+A brief description of WhatIDo program as interpreted using 'strace WhatIDo 0' (with argument 0):
 
-Analysing result of command 'strace WhatIDo 0' (with argument 0) produces the
-following system calls:
--------------------------------------------------------------
+1) mkdir("Welcome", 0775)                  = 0
 
-mkdir("Welcome", 0775)                  = 0
+Creates (if doesn't exist) a directory called "Welcome" giving it permission number 0775 in the
+current directory. Return value 0 means the command completed successfully.
 
-This command creates a directory called "Welcome" with permissions number 0775.
-  The return value is 0 means that the command done successfully.
+2) mkdir("Welcome/To", 0775)               = 0
 
+Creates (if doesn't exist) a directory called "To" inside previously created "Welcome" directory,
+also giving it permission number 0775. Return value 0 means the command completed successfully.
 
-mkdir("Welcome/To", 0775)     = 0
+3) open("Welcome/To/OS2018", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
 
-This command creates a directory inside "Welcome" directory named "To" with
-permissions number 0775, also successfully.
-
-
-open("Welcome/To/OS2018", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
-
-This command opens and creates (0_CREAT) (if doesn't exist) file named "OS2018"
- in folder 'Welcome/To'.
-"Welcome/To/OS2018", O_WRONLY|O_CREAT|O_TRUNC, 0666 are the system call
- arguments (flags) :
-O_WRONLY - Open with writing only permissions.
-O_CREAT - Check if the file exists. In this case this flag has no effect, else
- it creates the file.
-O_TRUNC	- if the file exists and is a regular file, and the file has permissions
+This command opens and creates (0_CREAT) (if doesn't exist) file called "OS2018" with write only
+permissions. O_TRUNC flag: if the file exists and is a regular file, and the file has permissions
 that allow writing, then its length is truncated to 0. If the file is a FIFO or
 terminal device file, this flag is ignored.
-0666 permissions - read and write permissions for the file.
-3 – system call return value, means that the command was done successfully.
+The return value is 3, meaning that the program was completed successfully and the new file
+descriptor value is 3.
 
-
-fstat(3, {st_dev=makedev(0, 53), st_ino=1917381310, st_mode=S_IFREG|0644,
+4) fstat(3, {st_dev=makedev(0, 53), st_ino=1917381310, st_mode=S_IFREG|0644,
  st_nlink=1, st_uid=201797, st_gid=40, st_blksize=65536, st_blocks=0, st_size=0,
   st_atime=2018-04-15T17:01:07+0300.536969000,
    st_mtime=2018-04-15T17:01:07+0300.536969000,
     st_ctime=2018-04-15T17:01:07+0300.536969000}) = 0
 
-*** The fstat() function shall obtain information about an open file associated with
- the file descriptor fildes(3 - which is OS2018), and shall write it to the area
-  pointed to by buf.
-S_ISREG(m) - checks whether it's a regular file.
-The return value is zero meaning the command completed succesfully. ***
+Referencing the new file using its file descriptor value(3), the program obtains information about
+this file using fstat command, this command writes this information into a struct residing in the
+address sent to fstat by second argument. The values of various fields in this struct are being
+presented in the curly brackets. The return value of the command is 0, meaning the command was
+completed successfully.
 
+5) write(3, "artyomab\nIf you haven't read the course guidelines yet --- do it right now!\n0", 77)
+ = 77
 
-write(3, "artyomab\nIf you haven't read the course guidelines yet --- do it
- right now!\n0", 77) = 77
+The Program calls write system call and then writes 77 bytes to "OS2018" file, the string provided
+in the second argument, that is. 77 - Return value - the number of bytes written. The command
+completed successfully.
 
-The Program calls write system call and then tries to write 77 bytes to
- "OS2018" file, the sentence written in the second argument, that is.
-3 - file descriptor (OS2018).
-77 - amount of bytes to write.
-77 - Return value - the number of bytes written. The comment completed
-successfully
+6) close(3)= 0
 
+Closes "OS2018" file successfully(0 return value).
 
-close(3)= 0
+7) unlink("Welcome/To/OS2018") = 0
 
-closing the file successfully.
-returns zero on success.  else -1.
+This sys-call deletes the file OS2018 from the file system. If there is still process using this
+file, it will be deleted after it stops using it. This call succeeded with return value 0.
 
+8) rmdir("Welcome/To/") = 0
 
-unlink("Welcome/To/OS2018") = 0
+This function deletes the "To" directory inside of "Welcome" directory.
 
-This sys-call deletes the file OS2018 from the file system.
-This call succeeded with return value 0.
-"Welcome/To/OS2018" - pathname.
+9) rmdir("Welcome/") = 0
 
+This function deletes the "Welcome" directory.
 
-rmdir("Welcome/To/") = 0
-
-This function delete a directory.
-"Welcome/To/" - is the path name
-
-
-rmdir("Welcome/") = 0
-
-This function delete a directory.
-"Welcome/" is the pathname
-
-
-exit_group(0)                           = ?
+10) exit_group(0)                           = ?
 
 The system call exits all threads from the calling process thread group
  in a process and terminates them.
@@ -101,6 +76,12 @@ The system call exits all threads from the calling process thread group
 +++ exited with 0 +++
 
 The final return value of the program is 0.
+
+
+
+
+
+
 
 
                           
