@@ -105,8 +105,6 @@ double osm_function_time(unsigned int iterations)
                   (end.tv_usec - start.tv_usec) * MICRO_TO_NANO;
 
     return time / totalIterations;
-
-
 }
 
 double osm_syscall_time(unsigned int iterations)
@@ -138,14 +136,4 @@ double osm_syscall_time(unsigned int iterations)
                   (end.tv_usec - start.tv_usec) * MICRO_TO_NANO;
 
     return time / totalIterations;
-
-}
-
-int main()
-{
-    std::cout << osm_operation_time(1000000)<< std::endl;
-    std::cout << osm_function_time(1000000)<< std::endl;
-    std::cout << osm_syscall_time(1000000)<< std::endl;
-
-    return 0;
 }

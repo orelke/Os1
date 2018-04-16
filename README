@@ -77,6 +77,11 @@ The system call exits all threads from the calling process thread group
 
 The final return value of the program is 0.
 
+NOTE:
+Some of the commands listed here like (open, mkdir, rmdir ...) need write permissions for the
+files/directories in the current directory, otherwise the program will get permission denied error
+and will not do all or some of the actions.
+
 
 
 
